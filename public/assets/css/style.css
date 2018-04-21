@@ -1,8 +1,12 @@
+main {
+	padding-top: 30px;
+}
+
 /* HEADER
 ===================== */
-header .navbar 		{
+/* header .navbar 		{
 	border-radius:0;
-}
+} */
 
 /* NGANIMATE
 ====================== */
@@ -37,9 +41,16 @@ header .navbar 		{
 	to 	{ -moz-transform:rotate(360deg); }
 }
 
-#chat {
-    width: 400px;
-	height: 500px;
+.card-header {
+	color:	white;
+	background-color: #17a2b8;
+}
+
+.card-body {
+	height: 300px;
 	overflow-y: auto;
-    background-color: aliceblue;
+}
+
+#canvas {
+	border: 1px solid  #17a2b8;
 }

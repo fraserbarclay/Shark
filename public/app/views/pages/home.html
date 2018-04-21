@@ -1,14 +1,15 @@
 <div class="jumbotron text-center">
-  <h1>Welcome to Shark Attack!</h1>
+  <h1 class="display-4">Welcome to Shark Attack!</h1>
 
   <div ng-if="!main.loggedIn">
-    <p>Login or register to play.</p>
-    <a href="/login" class="btn btn-primary">Login</a>
-    <a href="/register" class="btn btn-primary">Register</a>
+    <p class="lead">Login or register to play.</p>
+    <hr class="my-4">
+    <a href="/login" class="btn btn-success">Login</a>
+    <a href="/register" class="btn btn-info">Register</a>
   </div>
 
   <div ng-if="main.loggedIn">
-    <p>Get back to the game!</p>
+    <p class="lead">Get back to the game!</p>
     <a href="/game" class="btn btn-primary">Play</a>
   </div>
 </div>

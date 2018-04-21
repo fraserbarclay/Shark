@@ -1,27 +1,27 @@
-<div class="page-header">
-  <h1>Game</h1>
-</div>
-
 <div class="container">
   <div class="row">
-    <div class="col-xs-4 col-md-12">
-      <div id="chat">
-        <p ng-repeat="message in game.messages">
-          <strong>{{message.username}}</strong>: {{message.message}}
-        </p>
-      </div>
-      <form style="width:parent;" ng-submit="game.sendMessage()">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Type text here" ng-model="game.gameData.chatMessage">
-        </div>
-        <button type="submit" class="btn btn-block btn-primary">Send Message</button>
-      </form>
+    <div class="col-12 col-md-8">
+      <canvas id="canvas" width="640" height="480" ></canvas>
     </div>
-
-    <div class="col-xs-8 col-md-12">
-      <canvas id="demoCanvas" width="500" height="200"></canvas>
+    <div class="col-12 col-md-4">
+      <div class="card border-info mb-3">
+        <div class="card-header">Message Log</div>
+        <div class="card-body text-info">
+          <p ng-repeat="message in game.messages">
+            <strong>{{message.username}}</strong>: {{message.message}}
+          </p>
+        </div>
+        <div class="card-footer">
+          <form ng-submit="game.sendMessage()">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Type text here" ng-model="game.gameData.chatMessage">
+            </div>
+            <button type="submit" class="btn btn-block btn-info">Send Message</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="users"></div>
+  <!-- <div id="users"></div> Maybe leaderboard or info on how to play game -->
 </div>

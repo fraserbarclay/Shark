@@ -1,46 +1,36 @@
-<div class="row col-md-6 col-md-offset-3">
+<div class="col-lg-6 offset-lg-3">
 
 
   <div class="jumbotron">
-    <h1>Register</h1>
-    
+    <h1 class="display-4">Register</h1>
+
     <form class="form-horizontal" ng-submit="user.saveUser()">
-    
+
       <div class="form-group">
-        <label class="col-sm-2 control-label">Name</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" ng-model="user.userData.name">
-        </div>
+        <label class="control-label">Name</label>
+        <input type="text" class="form-control" ng-model="user.userData.name">
       </div>
-    
+
       <div class="form-group">
-        <label class="col-sm-2 control-label">Username</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" ng-model="user.userData.username">
-        </div>
+        <label class="control-label">Username</label>
+        <input type="text" class="form-control" ng-model="user.userData.username">
       </div>
-    
+
       <div class="form-group">
-        <label class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-6">
-          <input type="password" class="form-control" ng-model="user.userData.password">
-        </div>
+        <label class="control-label">Password</label>
+        <input type="password" class="form-control" ng-model="user.userData.password">
       </div>
-    
+
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-6">
-          <button type="submit" class="btn btn-success btn-lg btn-block" >Register</button>
-        </div>
+        <button type="submit" class="btn btn-success btn-lg btn-block">Register</button>
       </div>
+
       <div class="row show-hide-message" ng-show="user.message">
-        <div class="col-sm-6 col-sm-offset-2">
-      
-          <div class="alert alert-info">
-            {{ user.message }}  You can now <a href="/login">Login</a>
-          </div>
-      
+        <div class="alert alert-info">
+          {{ user.message }} You can now
+          <a href="/login">Login</a>
         </div>
       </div>
-    <!-- <form ng-submit="login.createSample()"><button type="submit" class="btn btn-block btn-primary">Create Sample?</button> </form> -->
+      <!-- <form ng-submit="login.createSample()"><button type="submit" class="btn btn-block btn-primary">Create Sample?</button> </form> -->
   </div>
 </div>

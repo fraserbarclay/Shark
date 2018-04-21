@@ -1,45 +1,34 @@
 <div class="page-header">
-  <h1>Edit User</h1>
+  <h1 class="display-4">Edit User</h1>
+  <hr>
 </div>
 
 <form class="form-horizontal" ng-submit="user.saveUser()">
 
   <div class="form-group">
-    <label class="col-sm-2 control-label">Name</label>
-    <div class="col-sm-6">
-      <input type="text" class="form-control" placeholder="{{user.userData.data.name}}" ng-model="user.userData.name">
-    </div>
+    <label class="control-label">Name</label>
+    <input type="text" class="form-control" placeholder="{{user.userData.data.name}}" ng-model="user.userData.name">
   </div>
 
   <div class="form-group">
-    <label class="col-sm-2 control-label">Username</label>
-    <div class="col-sm-6">
-      <input type="text" class="form-control" placeholder="{{user.userData.data.username}}" ng-model="user.userData.username">
-    </div>
+    <label class="control-label">Username</label>
+    <input type="text" class="form-control" placeholder="{{user.userData.data.username}}" ng-model="user.userData.username">
   </div>
 
   <div class="form-group">
-    <label class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-6">
-      <input type="password" class="form-control" ng-model="user.userData.password">
-    </div>
+    <label class="control-label">Password</label>
+    <input type="password" class="form-control" ng-model="user.userData.password">
   </div>
 
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-6">
-      <button type="submit" class="btn btn-success btn-lg btn-block">Update User</button>
-    </div>
+    <button type="submit" class="btn btn-success btn-lg btn-block">Update User</button>
   </div>
 </form>
 
-<a href="#" class="btn btn-danger btn-lg btn-block" ng-click="user.deleteUser(user.userData.data._id)">Delete User {{user.userData.data._id}}</a>
+<a href="#" class="btn btn-danger btn-lg btn-block" ng-click="user.deleteUser(user.userData.data._id)">Delete User</a>
 
 <div class="row show-hide-message" ng-show="user.message">
-  <div class="col-sm-6 col-sm-offset-2">
-
-    <div class="alert alert-info">
-      {{ user.message }}
-    </div>
-
+  <div class="alert alert-info">
+    {{ user.message }}
   </div>
 </div>
