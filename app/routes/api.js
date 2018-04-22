@@ -93,7 +93,7 @@ module.exports = function(app, express) {
   // route middleware to verify a token
   apiRouter.use(function(req, res, next) {
     // do logging
-    console.log('Somebody just came to our app!');
+    console.log('Verifying token...');
 
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -133,7 +133,7 @@ module.exports = function(app, express) {
   // accessed at GET http://localhost:8080/api
   apiRouter.get('/', function(req, res) {
     res.json({
-      message: 'hooray! welcome to our api!'
+      message: 'Success!'
     });
   });
 

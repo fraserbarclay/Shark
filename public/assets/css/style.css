@@ -4,9 +4,9 @@ main {
 
 /* HEADER
 ===================== */
-/* header .navbar 		{
-	border-radius:0;
-} */
+ .navbar-toggler	{
+	border: none;
+} 
 
 /* NGANIMATE
 ====================== */
@@ -47,7 +47,7 @@ main {
 }
 
 .card-body {
-	height: 300px;
+	height: 315px;
 	overflow-y: auto;
 }
 
