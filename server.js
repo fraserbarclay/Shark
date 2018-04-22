@@ -11,8 +11,8 @@ var config = require('./config');
 var path = require('path');
 
 var server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
-    messages = [];
+  io = require('socket.io').listen(server),
+  messages = [];
 
 app.use(express.static(__dirname + '/public'));
 
@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // configure our app to handle CORS requests
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
@@ -52,20 +52,45 @@ app.use('/api', apiRoutes);
 // MAIN CATCHALL ROUTE ---------------
 // SEND USERS TO FRONTEND ------------
 // has to be registered after API ROUTES
-app.get('*', function(req, res) {
+app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
 
 // SOCKETS
-io.sockets.on('connection', function (socket) {  
-    socket.on('send message', function(msg, username){
-        messages.push({
-            username: username,
-            message: msg
-          });
-      io.sockets.emit('new message', {messages});
+// ======================================
+
+io.sockets.on('connection', function (socket) {
+  // Message log  
+  socket.on('send message', function (msg, username) {
+    messages.push({
+      username: username,
+      message: msg
+    });
+    io.sockets.emit('new message', {
+      messages
+    });
+  });
+
+  // Moving player
+  socket.on('move', function (data) {
+    //var playerMoved = players.get(dataName);
+    //var nextX = playerMoved.x;
+    //var nextY = playerMoved.y;
+    //var intersect = false;
+    //if (intersect){
+    io.sockets.emit('moved', {
+      x: data.x,
+      y: data.y,
+      name: data.name,
+      //direction: data.direction,
+      //stage: data.stage
+    });
+    //  return;
+    //}
   });
 });
+
+
 
 // START THE SERVER
 // ====================================

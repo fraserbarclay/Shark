@@ -54,3 +54,11 @@ main {
 #canvas {
 	border: 1px solid  #17a2b8;
 }
+
+/*#mask {
+     filter: blur(10px);
+    -webkit-filter: blur(15px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px); 
+}*/
