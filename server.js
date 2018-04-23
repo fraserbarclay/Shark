@@ -13,6 +13,7 @@ var path = require('path');
 var server = require('http').createServer(app),
   io = require('socket.io').listen(server),
   messages = [];
+  players = [];
 
 app.use(express.static(__dirname + '/public'));
 
@@ -71,26 +72,35 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
+  // Initial players
+
+
+  // Show player
+  socket.on('playerInitialLocation', function (data){
+    players.push({
+      name: data.name,
+      x: data.x,
+      y: data.y
+    });
+    io.sockets.emit('drawPlayer', {
+      name: data.name,
+      x: data.x,
+      y: data.y
+    });
+  })
+
   // Moving player
   socket.on('move', function (data) {
-    //var playerMoved = players.get(dataName);
-    //var nextX = playerMoved.x;
-    //var nextY = playerMoved.y;
-    //var intersect = false;
-    //if (intersect){
+    var pos = players.findIndex(item => item.name === data.name);
+    players[pos].x = data.x;
+    players[pos].y =  data.y;
     io.sockets.emit('moved', {
       x: data.x,
       y: data.y,
       name: data.name,
-      //direction: data.direction,
-      //stage: data.stage
     });
-    //  return;
-    //}
   });
 });
-
-
 
 // START THE SERVER
 // ====================================

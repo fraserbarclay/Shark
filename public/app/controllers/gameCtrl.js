@@ -40,7 +40,7 @@ angular.module('gameCtrl', [])
     });
 
     // Reading map layout and adding sprites to canvas element
-    $.getJSON("assets/map/canvas.json", function (data) {
+    $.getJSON("assets/map/new.json", function (data) {
       $.each(data.layers, function (key, val) {
         var count = 0;
         for (var row = 0; row < stage.canvas.height; row += 16) {
@@ -58,7 +58,6 @@ angular.module('gameCtrl', [])
           }
         }
       });
-      stage.setChildIndex(stage.getChildByName(vm.user), stage.numChildren - 1);
       stage.update();
     });
 
@@ -78,25 +77,29 @@ angular.module('gameCtrl', [])
     });
 
     Auth.getUser()
-    .then(function (response) {
-      vm.user = response.data.username;
+      .then(function (response) {
+        vm.user = response.data.username;
 
-      socket.emit('createPlayer', {
+        socket.emit('playerInitialLocation', {
+          name: vm.user,
+          x: 160,
+          y: 320
+        });
+
+        socket.on('drawPlayer', function (data) {
+          playerTile = new createjs.Sprite(greatWhite);
+          playerTile.gotoAndStop(0);
+          playerTile.name = data.name;
+          playerTile.x = data.x;
+          playerTile.y = data.y;
+          stage.addChild(playerTile);
+          stage.setChildIndex(stage.getChildByName(data.name), stage.numChildren - 1);
+          stage.update();
+        });
 
       });
-      
-      playerTile = new createjs.Sprite(greatWhite);
-      playerTile.gotoAndStop(0);
-      playerTile.name = vm.user;
-      playerTile.x = 160;
-      playerTile.y = 320;
-      stage.addChild(playerTile);
-      stage.setChildIndex(stage.getChildByName(vm.user), stage.numChildren - 1);
-      stage.update();
-      
-    });
 
-    vm.focus = function(event){
+    vm.focus = function (event) {
       event.target.focus();
     }
 
@@ -105,7 +108,6 @@ angular.module('gameCtrl', [])
       event.preventDefault();
       var player = stage.getChildByName(vm.user);
 
-      //var intersect = false;
       //var direction;
       var x = player.x;
       var y = player.y;
@@ -114,35 +116,32 @@ angular.module('gameCtrl', [])
       switch (event.keyCode) {
         case 37:
         case 65:
-          //direction = "left";
-          x-=2;
+          x -= 10;
           break;
         case 38:
         case 87:
-          //direction = "up";
-          y-=2;
+          y -= 10;
           break;
         case 39:
         case 68:
-          //direction = "right";
-          x+=2;
+          x += 10;
           break;
         case 40:
         case 83:
-          //direction = "down";
-          y+=2;
+          y += 10;
           break;
         default:
-          //direction = null;
       }
 
-      socket.emit('move', {
-        name: player.name,
-        x: x,
-        y: y
-        // intersect: intersect,
-        // stage: currStage
-      });
+      if (stage.getObjectUnderPoint(x, y, 0).name == 'Water') {
+        socket.emit('move', {
+          name: player.name,
+          x: x,
+          y: y
+        });
+      } else {
+        console.log(stage.getObjectUnderPoint(x, y, 0).name);
+      }
     }
 
     // Function for when a player has moved
@@ -153,9 +152,8 @@ angular.module('gameCtrl', [])
         x: data.x,
         y: data.y
       });
-
       stage.update();
-
+      $scope.$apply();
     });
 
   });
