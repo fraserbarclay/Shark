@@ -24,6 +24,12 @@ angular.module('gameCtrl', [])
     // Create variable for canvas element
     var stage = new createjs.Stage("canvas");
 
+    createjs.Ticker.on("tick", tick);
+
+    function tick(event) {
+      stage.update(event);
+    }
+
     // Spritesheet to reference for making map
     var image = new Image();
     image.src = "assets/img/sharkspritesheet.png"
@@ -58,23 +64,75 @@ angular.module('gameCtrl', [])
           }
         }
       });
+      // •
+      var Oahu = new createjs.Text("O'ahu", "20px Arial", "#000000");
+      var Molokai = new createjs.Text("Moloka'i", "20px Arial", "#000000");
+      var Hawaii = new createjs.Text("HAWAIIAN ISLAND", "20px Arial", "#000000");
+      var Maui = new createjs.Text("Maui", "20px Arial", "#000000");
+      var Big = new createjs.Text("Hawai'i", "20px Arial", "#000000");
+
+      Oahu.x = 155;
+      Oahu.y = 80;
+      stage.addChild(Oahu);
+
+      Molokai.x = 295;
+      Molokai.y = 115;
+      stage.addChild(Molokai);
+
+      Maui.x = 410;
+      Maui.y = 200;
+      stage.addChild(Maui);
+
+      Big.x = 500;
+      Big.y = 350;
+      stage.addChild(Big);
+
+      Hawaii.x = 280;
+      Hawaii.y = 225;
+      Hawaii.rotation = 40;
+      stage.addChild(Hawaii);
       stage.update();
     });
 
     // Spritesheet for player sprite
     var greatWhiteImage = new Image();
-    greatWhiteImage.src = "assets/img/greatWhite2.png"
+    greatWhiteImage.src = "assets/img/sammyShark.png"
     var greatWhite = new createjs.SpriteSheet({
       images: [greatWhiteImage],
       frames: {
-        width: 25,
-        height: 16,
+        width: 49,
+        height: 37,
         regX: 0,
         regY: 0,
         spacing: 0,
         margin: 0
+      },
+      animations: {
+        idle: [0, 11, "idle", 0.5]
       }
     });
+
+    // Spritesheet for enemy sprite
+    var fishImage = new Image();
+    fishImage.src = "assets/img/funnyFish.png"
+    var fish = new createjs.SpriteSheet({
+      images: [fishImage],
+      frames: {
+        //width: 60,
+        //height: 45,
+        width: 86,
+        height: 48,
+        regX: 0,
+        regY: 0,
+        spacing: 0,
+        margin: 0
+      },
+      animations: {
+        //idle: [0, 1, "idle", 0.3]
+        idle: [0, 30, "idle", 1]
+      }
+    });
+
 
     Auth.getUser()
       .then(function (response) {
@@ -88,12 +146,21 @@ angular.module('gameCtrl', [])
 
         socket.on('drawPlayer', function (data) {
           playerTile = new createjs.Sprite(greatWhite);
-          playerTile.gotoAndStop(0);
+          playerTile.gotoAndPlay("idle");
           playerTile.name = data.name;
           playerTile.x = data.x;
           playerTile.y = data.y;
           stage.addChild(playerTile);
           stage.setChildIndex(stage.getChildByName(data.name), stage.numChildren - 1);
+          stage.update();
+
+          enemyTile = new createjs.Sprite(fish);
+          enemyTile.gotoAndPlay("idle");
+          enemyTile.name = "enemy";
+          enemyTile.x = 300;
+          enemyTile.y = 50;
+          stage.addChild(enemyTile);
+          stage.setChildIndex(stage.getChildByName("enemy"), stage.numChildren - 1);
           stage.update();
         });
 
