@@ -40,7 +40,7 @@ angular.module('gameCtrl', [])
     });
 
     // Reading map layout and adding sprites to canvas element
-    $.getJSON("assets/map/new.json", function (data) {
+    $.getJSON("assets/map/canvas.json", function (data) {
       $.each(data.layers, function (key, val) {
         var count = 0;
         for (var row = 0; row < stage.canvas.height; row += 16) {
@@ -148,10 +148,9 @@ angular.module('gameCtrl', [])
     socket.on('moved', function (data) {
       var shark = stage.getChildByName(data.name);
 
-      createjs.Tween.get(shark).to({
-        x: data.x,
-        y: data.y
-      });
+      shark.x = data.x;
+      shark.y = data.y;
+
       stage.update();
       $scope.$apply();
     });
