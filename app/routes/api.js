@@ -170,6 +170,9 @@ module.exports = function(app, express) {
 
     // update the user with this id
     .put(function(req, res) {
+      if (!req.params.user_id){
+        req.params.user_id = req.body.userID;
+      }
       User.findById(req.params.user_id, function(err, user) {
 
         if (err) res.send(err);
@@ -178,6 +181,7 @@ module.exports = function(app, express) {
         if (req.body.name) user.name = req.body.name;
         if (req.body.username) user.username = req.body.username;
         if (req.body.password) user.password = req.body.password;
+        if (req.body.score) user.score = req.body.score;
 
         // save the user
         user.save(function(err) {

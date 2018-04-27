@@ -29,6 +29,7 @@ angular.module('userCtrl', ['userService'])
     vm.saveUser = function () {
       vm.processing = true;
       vm.message = '';
+      vm.userData.score = 0;
 
       // use the create function in the userService
       User.create(vm.userData)

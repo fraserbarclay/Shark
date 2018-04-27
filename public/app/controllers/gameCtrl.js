@@ -1,6 +1,6 @@
 angular.module('gameCtrl', [])
 
-  .controller('gameController', function (Auth, $scope) {
+  .controller('gameController', function (Auth, User, $scope) {
 
     var vm = this;
     vm.messages = [];
@@ -137,8 +137,10 @@ angular.module('gameCtrl', [])
 
         socket.emit('playerInitialLocation', {
           name: vm.user,
-          x: 160,
-          y: 320
+          //x: 160,
+          //y: 320
+          x: 350,
+          y: 50
         });
 
         socket.on('drawPlayer', function (data) {
@@ -197,8 +199,6 @@ angular.module('gameCtrl', [])
 
       if (x > 420 && x < 500 && y > 25 && y < 70) {
         socket.emit('attack');
-        //vm.enemyHealth--;
-        //console.log(x + "," + y);
       } else if (stage.getObjectUnderPoint(x, y, 0).name == 'Water') {
         socket.emit('move', {
           name: player.name,
@@ -222,8 +222,34 @@ angular.module('gameCtrl', [])
     socket.on('attacked', function (data) {
       vm.enemyHealth = data.enemyHealth;
       $scope.$apply();
-      if (vm.enemyHealth == 0){
+      if (vm.enemyHealth == 0) {
         stage.removeChild(enemyTile);
       }
+
+      vm.userData = {};
+      // get the user data for the user to edit
+      Auth.getUser()
+        .then(function (response) {
+          //console.log(response);
+          vm.user_id = response.data.userID;
+          vm.score = response.data.score;
+       
+        //console.log(vm.score);
+      // Update user score
+        if (vm.score){
+          vm.score++;
+        } else {
+          vm.score = 0;
+        }
+        //console.log(vm.score);
+        vm.userData.score = vm.score;
+        vm.userData.userID = vm.user_id;
+        //console.log(vm.userData);
+
+      // call the userService function to update
+      User.update(vm.user_id, vm.userData)
+        .then(function (data) {
+        }); 
+      });
     });
   });
