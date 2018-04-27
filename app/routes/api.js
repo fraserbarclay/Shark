@@ -19,6 +19,7 @@ module.exports = function(app, express) {
     user.name = req.body.name; // set the users name (comes from the request)
     user.username = req.body.username; // set the users username (comes from the request)
     user.password = req.body.password; // set the users password (comes from the request)
+    user.score = 0;
 
     user.save(function(err) {
       if (err) {
@@ -72,7 +73,8 @@ module.exports = function(app, express) {
           var token = jwt.sign({
             name: user.name,
             username: user.username,
-            userID: user._id
+            userID: user._id,
+            score: user.score
           }, superSecret, {
             expiresIn: '24h' // expires in 24 hours
           });

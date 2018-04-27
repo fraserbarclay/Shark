@@ -131,6 +131,7 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('attacked', {
         enemyHealth: enemyHealth 
       });
+      // Add point to user score
     });
 });
 

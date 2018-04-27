@@ -16,7 +16,8 @@ var UserSchema = new Schema({
     type: String,
     required: true,
     select: false
-  }
+  },
+  score: Number
 });
 
 // hash the password before the user is saved
