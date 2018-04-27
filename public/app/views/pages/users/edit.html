@@ -27,8 +27,10 @@
 
 <a href="#" class="btn btn-danger btn-lg btn-block" ng-click="user.deleteUser(user.userData.data._id)">Delete User</a>
 
+<br>
+
 <div class="row show-hide-message" ng-show="user.message">
-  <div class="alert alert-info">
+  <div class="alert alert-info" style="width: 100%; margin: 0px 15px;">
     {{ user.message }}
   </div>
 </div>

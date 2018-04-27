@@ -11,6 +11,7 @@
   <!-- CSS  -->
   <!-- load bootstrap from CDN and custom CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
 
@@ -51,16 +52,16 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto" ng-if="main.loggedIn">
           <li class="nav-item">
-              <a class="nav-link" href="/game">Game</a>
+              <a class="nav-link" href="/game"><i class="fas fa-gamepad"></i> Game</a>
           </li>
           <li class="nav-item" ng-if="!main.loggedIn">
               <a class="nav-link" href="/login">Login</a>
           </li>
           <li class="nav-item" ng-if="main.loggedIn">
-              <a class="nav-link" href="/users/{{ main.user.userID }}">Account Settings</a>
+              <a class="nav-link" href="/users/{{ main.user.userID }}"><i class="fas fa-user"></i> Account Settings</a>
           </li>
           <li class="nav-item" ng-if="main.loggedIn">
-              <a class="nav-link" href="#" ng-click="main.doLogout()">Logout</a>
+              <a class="nav-link" href="#" ng-click="main.doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </li>
         </ul>
         <span class="navbar-text" ng-if="main.loggedIn">

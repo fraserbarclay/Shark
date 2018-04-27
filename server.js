@@ -12,8 +12,10 @@ var path = require('path');
 
 var server = require('http').createServer(app),
   io = require('socket.io').listen(server),
-  messages = [];
-players = [];
+  messages = [],
+  players = [],
+  allClients = [],
+  enemyHealth = 100;
 
 app.use(express.static(__dirname + '/public'));
 
@@ -61,6 +63,15 @@ app.get('*', function (req, res) {
 // ======================================
 
 io.sockets.on('connection', function (socket) {
+  allClients.push(socket);
+
+  socket.on('disconnect', function() {
+     console.log('Got disconnect!');
+
+     var i = allClients.indexOf(socket);
+     allClients.splice(i, 1);
+  });
+
   // Message log  
   socket.on('send message', function (msg, username) {
     messages.push({
@@ -79,6 +90,10 @@ io.sockets.on('connection', function (socket) {
       x: player.x,
       y: player.y
     });
+  });
+
+  socket.emit('drawEnemy', {
+    enemyHealth: enemyHealth 
   });
 
   // Show player
@@ -109,6 +124,14 @@ io.sockets.on('connection', function (socket) {
       name: data.name,
     });
   });
+
+    // Reducing enemy health
+    socket.on('attack', function (data) {
+      enemyHealth--;
+      io.sockets.emit('attacked', {
+        enemyHealth: enemyHealth 
+      });
+    });
 });
 
 // START THE SERVER

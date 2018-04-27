@@ -5,6 +5,7 @@ angular.module('gameCtrl', [])
     var vm = this;
     vm.messages = [];
     vm.user = '';
+    vm.enemyHealth;
 
     var socket = io.connect();
     $("#canvas").focus();
@@ -91,7 +92,6 @@ angular.module('gameCtrl', [])
       Hawaii.y = 225;
       Hawaii.rotation = 40;
       stage.addChild(Hawaii);
-      stage.update();
     });
 
     // Spritesheet for player sprite
@@ -118,8 +118,6 @@ angular.module('gameCtrl', [])
     var fish = new createjs.SpriteSheet({
       images: [fishImage],
       frames: {
-        //width: 60,
-        //height: 45,
         width: 86,
         height: 48,
         regX: 0,
@@ -128,7 +126,6 @@ angular.module('gameCtrl', [])
         margin: 0
       },
       animations: {
-        //idle: [0, 1, "idle", 0.3]
         idle: [0, 30, "idle", 1]
       }
     });
@@ -151,20 +148,18 @@ angular.module('gameCtrl', [])
           playerTile.x = data.x;
           playerTile.y = data.y;
           stage.addChild(playerTile);
-          stage.setChildIndex(stage.getChildByName(data.name), stage.numChildren - 1);
-          stage.update();
-
-          enemyTile = new createjs.Sprite(fish);
-          enemyTile.gotoAndPlay("idle");
-          enemyTile.name = "enemy";
-          enemyTile.x = 300;
-          enemyTile.y = 50;
-          stage.addChild(enemyTile);
-          stage.setChildIndex(stage.getChildByName("enemy"), stage.numChildren - 1);
-          stage.update();
         });
-
       });
+
+    socket.on('drawEnemy', function (data) {
+      enemyTile = new createjs.Sprite(fish);
+      enemyTile.gotoAndPlay("idle");
+      enemyTile.name = "enemy";
+      enemyTile.x = 450;
+      enemyTile.y = 50;
+      stage.addChild(enemyTile);
+      vm.enemyHealth = data.enemyHealth;
+    });
 
     vm.focus = function (event) {
       event.target.focus();
@@ -200,7 +195,11 @@ angular.module('gameCtrl', [])
         default:
       }
 
-      if (stage.getObjectUnderPoint(x, y, 0).name == 'Water') {
+      if (x > 420 && x < 500 && y > 25 && y < 70) {
+        socket.emit('attack');
+        //vm.enemyHealth--;
+        //console.log(x + "," + y);
+      } else if (stage.getObjectUnderPoint(x, y, 0).name == 'Water') {
         socket.emit('move', {
           name: player.name,
           x: x,
@@ -217,9 +216,14 @@ angular.module('gameCtrl', [])
 
       shark.x = data.x;
       shark.y = data.y;
-
-      stage.update();
-      $scope.$apply();
     });
 
+    // Function for when a player has attacked
+    socket.on('attacked', function (data) {
+      vm.enemyHealth = data.enemyHealth;
+      $scope.$apply();
+      if (vm.enemyHealth == 0){
+        stage.removeChild(enemyTile);
+      }
+    });
   });

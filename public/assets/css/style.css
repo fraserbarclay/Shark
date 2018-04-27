@@ -18,29 +18,6 @@ main {
 	animation:zoomIn 0.3s both ease;
 }
 
-/* ANIMATIONS
-====================== */
-.spinner {
-	-webkit-animation:spin 1s infinite;
-	-moz-animation:spin 1s infinite;
-	animation:spin 1s infinite;
-}
-
-@keyframes spin {
-	from 	{ transform:rotate(0deg); }
-	to 	{ transform:rotate(360deg); }
-}
-
-@-webkit-keyframes spin {
-	from 	{ -webkit-transform:rotate(0deg); }
-	to 	{ -webkit-transform:rotate(360deg); }
-}
-
-@-moz-keyframes spin {
-	from 	{ -moz-transform:rotate(0deg); }
-	to 	{ -moz-transform:rotate(360deg); }
-}
-
 .card-header {
 	color:	white;
 	background-color: #17a2b8;
@@ -54,11 +31,3 @@ main {
 #canvas {
 	border: 1px solid  #17a2b8;
 }
-
-/*#mask {
-     filter: blur(10px);
-    -webkit-filter: blur(15px);
-    -moz-filter: blur(10px);
-    -o-filter: blur(10px);
-    -ms-filter: blur(10px); 
-}*/
