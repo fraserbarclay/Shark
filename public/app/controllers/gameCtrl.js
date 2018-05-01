@@ -5,6 +5,7 @@ angular.module('gameCtrl', [])
     var vm = this;
     vm.messages = [];
     vm.user = '';
+    vm.userID = '';
     vm.enemyHealth;
 
     var socket = io.connect();
@@ -134,13 +135,14 @@ angular.module('gameCtrl', [])
     Auth.getUser()
       .then(function (response) {
         vm.user = response.data.username;
-
+        vm.userID = response.data.userID;
         socket.emit('playerInitialLocation', {
           name: vm.user,
           //x: 160,
           //y: 320
           x: 350,
-          y: 50
+          y: 50,
+          score: response.data.score
         });
 
         socket.on('drawPlayer', function (data) {
@@ -198,7 +200,9 @@ angular.module('gameCtrl', [])
       }
 
       if (x > 420 && x < 500 && y > 25 && y < 70) {
-        socket.emit('attack');
+        socket.emit('attack', {
+          name: player.name
+        });
       } else if (stage.getObjectUnderPoint(x, y, 0).name == 'Water') {
         socket.emit('move', {
           name: player.name,
@@ -226,30 +230,22 @@ angular.module('gameCtrl', [])
         stage.removeChild(enemyTile);
       }
 
-      vm.userData = {};
-      // get the user data for the user to edit
-      Auth.getUser()
-        .then(function (response) {
-          //console.log(response);
-          vm.user_id = response.data.userID;
-          vm.score = response.data.score;
-       
-        //console.log(vm.score);
+      // get the user data for the user to edit   
+       vm.userData = {};
       // Update user score
-        if (vm.score){
-          vm.score++;
+        if (data.score != undefined){
+          data.score++;
         } else {
-          vm.score = 0;
+          data.score = 0;
         }
         //console.log(vm.score);
-        vm.userData.score = vm.score;
-        vm.userData.userID = vm.user_id;
+        vm.userData.score = data.score;
+        vm.userData.userID = vm.userID;
         //console.log(vm.userData);
 
       // call the userService function to update
-      User.update(vm.user_id, vm.userData)
+      User.update(vm.userID, vm.userData)
         .then(function (data) {
         }); 
-      });
     });
   });

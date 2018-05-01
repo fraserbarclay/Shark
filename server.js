@@ -102,7 +102,8 @@ io.sockets.on('connection', function (socket) {
       players.push({
         name: data.name,
         x: data.x,
-        y: data.y
+        y: data.y,
+        score: data.score
       });
 
       io.sockets.emit('drawPlayer', {
@@ -128,10 +129,13 @@ io.sockets.on('connection', function (socket) {
     // Reducing enemy health
     socket.on('attack', function (data) {
       enemyHealth--;
+      var pos = players.findIndex(item => item.name === data.name);
+      players[pos].score++;
       io.sockets.emit('attacked', {
-        enemyHealth: enemyHealth 
+        enemyHealth: enemyHealth, 
+        score: players[pos].score,
+        name: data.name
       });
-      // Add point to user score
     });
 });
 
