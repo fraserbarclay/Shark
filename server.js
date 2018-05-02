@@ -96,6 +96,10 @@ io.sockets.on('connection', function (socket) {
     enemyHealth: enemyHealth 
   });
 
+  io.sockets.emit('leader', {
+    userScores: players
+  });
+
   // Show player
   socket.on('playerInitialLocation', function (data) {
     if (players.findIndex(item => item.name === data.name) == -1) {
@@ -111,6 +115,7 @@ io.sockets.on('connection', function (socket) {
         x: data.x,
         y: data.y
       });
+
     }
   })
 
@@ -135,6 +140,9 @@ io.sockets.on('connection', function (socket) {
         enemyHealth: enemyHealth, 
         score: players[pos].score,
         name: data.name
+      });
+      io.sockets.emit('leader', {
+        userScores: players
       });
     });
 });

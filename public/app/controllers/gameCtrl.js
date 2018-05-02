@@ -17,9 +17,15 @@ angular.module('gameCtrl', [])
     };
 
     socket.on('new message', function (data) {
-      console.log(data);
       vm.gameData = {};
       vm.messages = data.messages;
+      $scope.$apply();
+    });
+
+    socket.on('leader', function(data){
+      data.userScores.sort(function(a, b){return b.score - a.score});
+
+      vm.userScores = data.userScores;
       $scope.$apply();
     });
 
@@ -238,10 +244,8 @@ angular.module('gameCtrl', [])
         } else {
           data.score = 0;
         }
-        //console.log(vm.score);
         vm.userData.score = data.score;
         vm.userData.userID = vm.userID;
-        //console.log(vm.userData);
 
       // call the userService function to update
       User.update(vm.userID, vm.userData)

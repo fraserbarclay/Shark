@@ -19,7 +19,6 @@ module.exports = function(app, express) {
     user.name = req.body.name; // set the users name (comes from the request)
     user.username = req.body.username; // set the users username (comes from the request)
     user.password = req.body.password; // set the users password (comes from the request)
-    user.score = 0;
 
     user.save(function(err) {
       if (err) {
