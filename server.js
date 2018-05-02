@@ -133,9 +133,14 @@ io.sockets.on('connection', function (socket) {
 
     // Reducing enemy health
     socket.on('attack', function (data) {
-      enemyHealth--;
       var pos = players.findIndex(item => item.name === data.name);
       players[pos].score++;
+      if (players[pos].score > 20){
+        enemyHealth -= 2;
+      } else {
+        enemyHealth--;
+      }
+
       io.sockets.emit('attacked', {
         enemyHealth: enemyHealth, 
         score: players[pos].score,

@@ -72,7 +72,7 @@ angular.module('gameCtrl', [])
           }
         }
       });
-      // •
+      // Display text on map
       var Oahu = new createjs.Text("O'ahu", "20px Arial", "#000000");
       var Molokai = new createjs.Text("Moloka'i", "20px Arial", "#000000");
       var Hawaii = new createjs.Text("HAWAIIAN ISLAND", "20px Arial", "#000000");
@@ -142,12 +142,18 @@ angular.module('gameCtrl', [])
       .then(function (response) {
         vm.user = response.data.username;
         vm.userID = response.data.userID;
+        var x = 100;
+        var y = 350;
+        if (vm.user == "test2"){
+          x = 50;
+          y = 350;
+        }
         socket.emit('playerInitialLocation', {
           name: vm.user,
           //x: 160,
-          //y: 320
-          x: 350,
-          y: 50,
+          //y: 320,
+          x: x,
+          y: y,
           score: response.data.score
         });
 
